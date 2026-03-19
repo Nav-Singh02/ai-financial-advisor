@@ -1,24 +1,30 @@
-AI Financial Advisor RAG Agent
+# AI Financial Advisor RAG Agent
+
 A LangGraph-powered agent that reads financial documents and answers questions about them — generating a portfolio summary, risk breakdown, and draft client email from a single query.
+
 Built with LangChain, LangGraph, Azure OpenAI, and Streamlit.
-What it does
+
+## What it does
+
 Upload any financial PDF (10-K, earnings report, portfolio statement). Ask a question. The agent runs four steps in sequence:
 
-Retrieve — pulls the most relevant chunks from the document using vector similarity search
-Summarize — writes a concise portfolio summary from the retrieved content
-Flag risks — identifies and categorizes risk factors across market, regulatory, liquidity, and concentration categories
-Draft email — writes a professional client-facing email based on the findings
+1. **Retrieve** — pulls the most relevant chunks from the document using vector similarity search
+2. **Summarize** — writes a concise portfolio summary from the retrieved content
+3. **Flag risks** — identifies and categorizes risk factors across market, regulatory, liquidity, and concentration categories
+4. **Draft email** — writes a professional client-facing email based on the findings
 
-Every run is logged to logs/audit_log.jsonl with a timestamp, the question, all outputs, and chunk count.
-Tech stack
+Every run is logged to `logs/audit_log.jsonl` with a timestamp, the question, all outputs, and chunk count.
 
-LangChain — document loading, chunking, embeddings, retrieval
-LangGraph — multi-node agent orchestration
-Azure OpenAI — GPT-4o for generation, text-embedding-ada-002 for embeddings
-Streamlit — demo UI
-Python — built and tested on Python 3.12
+## Tech stack
 
-Project structure
+- LangChain — document loading, chunking, embeddings, retrieval
+- LangGraph — multi-node agent orchestration
+- Azure OpenAI — GPT-4o for generation, text-embedding-ada-002 for embeddings
+- Streamlit — demo UI
+- Python — built and tested on Python 3.12
+
+## Project structure
+```
 ai-financial-advisor/
 ├── app/
 │   ├── rag_pipeline.py      # PDF ingestion, embedding, retrieval chain
@@ -29,11 +35,13 @@ ai-financial-advisor/
 ├── logs/                    # Audit logs written here
 ├── requirements.txt
 └── .env                     # Not committed — see setup below
-Setup
+```
 
-Clone the repo and install dependencies:
+## Setup
 
-bashpip install -r requirements.txt
+1. Clone the repo and install dependencies:
+```bash
+pip install -r requirements.txt
 ```
 
 2. Create a `.env` file in the project root:
@@ -42,12 +50,20 @@ AZURE_OPENAI_API_KEY=your_key
 AZURE_OPENAI_ENDPOINT=https://your-resource.cognitiveservices.azure.com/
 AZURE_OPENAI_DEPLOYMENT_NAME=gpt-4o
 AZURE_OPENAI_EMBEDDING_DEPLOYMENT_NAME=text-embedding-ada-002
+```
 
-Drop a financial PDF into the data/ folder
-Run the Streamlit app:
+3. Drop a financial PDF into the `data/` folder
 
-bashstreamlit run app/streamlit_app.py
+4. Run the Streamlit app:
+```bash
+streamlit run app/streamlit_app.py
+```
+
 Or run the agent directly from the terminal:
-bashpython app/agent.py
-Notes
+```bash
+python app/agent.py
+```
+
+## Notes
+
 This is a portfolio project. The in-memory vector store resets when the app restarts — this is intentional for simplicity. A production version would swap in a persistent store like Azure AI Search or Chroma.
